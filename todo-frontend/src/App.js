@@ -23,7 +23,12 @@ class App extends Component {
   pushTodo = todo => {
     const { todos } = this.state;
     todos.push(todo);
-    this.setState({todos, viewList : true});
+    this.setState({ todos, viewList: true });
+  };
+  updateItem = (todo, index) => {
+    const { todos } = this.state;
+    todos[index] = todo;
+    this.setState({ todos });
   };
   render() {
     const { viewList, todos } = this.state;
@@ -31,7 +36,12 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           {viewList ? (
-            <ListView todos={todos} showForm={this.showForm} updateTodos={this.updateTodos} />
+            <ListView
+              todos={todos}
+              showForm={this.showForm}
+              updateTodos={this.updateTodos}
+              updateItem={this.updateItem}
+            />
           ) : (
             <TodoForm pushTodo={this.pushTodo} />
           )}
