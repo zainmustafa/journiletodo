@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+mongoose.connect('mongodb://zain:786demo@ds161121.mlab.com:61121/demo-db');
 const Schema = mongoose.Schema;
 
 const TaskSchema = new Schema({
