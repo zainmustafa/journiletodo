@@ -6,18 +6,16 @@ import {
   FormGroup,
   FormControl
 } from "react-bootstrap";
-import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
-
-import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import swal from "sweetalert2";
+// import DatePicker from "react-datepicker";
 
 class TodoForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       title: "",
-      content: "",
-      startDate: moment()
+      content: ""
     };
   }
 
@@ -28,20 +26,34 @@ class TodoForm extends Component {
   };
 
   addTask = () => {
-    const { title, content } = this.state;
-    this.props.Add(title, content);
-    this.setState({
-      title: "",
-      content: ""
-    });
+    
   };
 
   onSubmitForm = () => {
-    console.log(this.state);
-  }
+    const { title, content } = this.state;
+    const data = {
+      title,
+      content
+    };
+    fetch("http://localhost:4000/todos", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        swal("Todo Added", "Todo Added!", "error").then(()=>{
+          this.props.pushTodo(res);
+        });
+        
+      })
+      .catch(err => console.log(err));
+  };
 
   render() {
-    const { title, content, startDate } = this.state;
+    const { title, content } = this.state;
 
     return (
       <Form>
@@ -64,14 +76,16 @@ class TodoForm extends Component {
             onChange={this.setTxt}
           />
         </FormGroup>
-        <FormGroup>
+        {/* <FormGroup>
           <DatePicker
             selected={startDate}
             name="startDate"
             onChange={this.handleChange}
           />
-        </FormGroup>
-        <Button bsStyle="primary" onClick={this.onSubmitForm}>Submit</Button>
+        </FormGroup> */}
+        <Button bsStyle="primary" onClick={this.onSubmitForm}>
+          Submit
+        </Button>
       </Form>
     );
   }
