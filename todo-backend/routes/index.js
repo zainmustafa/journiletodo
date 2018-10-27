@@ -3,10 +3,8 @@ var router = express.Router();
 var Task = require("./models/todos");
 
 
-
-
-
 /* GET home page. */
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
@@ -43,9 +41,9 @@ router.post('/todos', function(req, res,){
 router.delete('/todos/:id', function(req, res,){
   Task.deleteOne({ _id: req.params.id }, (err, doc) => {
     if (err) {
-        res.send(err);
+        res.send({err, status : false});
     }
-    res.json({ message: 'Successfully deleted Task!' });
+    res.json({ message: 'Successfully deleted Task!', status : true });
   });
 })
 router.put('/todos/:id', function(req, res,){
