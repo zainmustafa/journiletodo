@@ -10,12 +10,17 @@ class App extends Component {
       viewList: true
     };
   }
+  showForm = () =>{
+    this.setState({
+      viewList : false
+    })
+  }
   render() {
     const { viewList } = this.state;
     return (
       <div className="App">
-        <header className="App-header">
-          {viewList ? <ListView /> : <TodoForm />}
+        <header className="App-header">  
+          {viewList ? <ListView showForm={this.showForm} /> : <TodoForm />}
         </header>
       </div>
     );

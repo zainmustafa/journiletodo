@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button } from "react-bootstrap";
+import { Table, Button, Row, Glyphicon} from "react-bootstrap";
 import swal from "sweetalert2";
 
 class ListView extends Component {
@@ -52,50 +52,63 @@ class ListView extends Component {
       }
     ];
     return (
-      <Table responsive>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Title</th>
-            <th>Content</th>
-            <th>Date</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((d, index) => {
-            return (
-              <tr key={index.toString()}>
-                <td>{index + 1}</td>
-                <td>{d.title}</td>
-                <td>{d.content}</td>
-                <td>{d.date}</td>
-                <td>
-                  <Button
-                    bsStyle="primary"
-                    onClick={() => {
-                      this.updateTask(d.title, d.content, index);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                </td>
-                <td>
-                  <Button
-                    bsStyle="danger"
-                    onClick={() => {
-                      this.delTask(index);
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+      <div>
+        <Row>
+          Todo List{" "}
+          <Button
+            bsSize="large"
+            onClick={() => {
+              this.props.showForm();
+            }}
+          >
+            <Glyphicon glyph="plus-sign" /> Add Todo
+          </Button>
+        </Row>
+        <Table responsive>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Content</th>
+              <th>Date</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((d, index) => {
+              return (
+                <tr key={index.toString()}>
+                  <td>{index + 1}</td>
+                  <td>{d.title}</td>
+                  <td>{d.content}</td>
+                  <td>{d.date}</td>
+                  <td>
+                    <Button
+                      bsStyle="primary"
+                      onClick={() => {
+                        this.updateTask(d.title, d.content, index);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  </td>
+                  <td>
+                    <Button
+                      bsStyle="danger"
+                      onClick={() => {
+                        this.delTask(index);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
     );
   }
 }
