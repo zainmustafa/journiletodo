@@ -31,6 +31,9 @@ class TodoForm extends Component {
 
   onSubmitForm = () => {
     const { title, content } = this.state;
+    if(title == "" && content == ""){
+      return;
+    }
     const data = {
       title,
       content
@@ -44,7 +47,7 @@ class TodoForm extends Component {
     })
       .then(res => res.json())
       .then(res => {
-        swal("Todo Added", "Todo Added!", "error").then(()=>{
+        swal("Todo Added", "Todo Added!", "success").then(()=>{
           this.props.pushTodo(res);
         });
         
