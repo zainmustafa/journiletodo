@@ -1,24 +1,30 @@
 import React, { Component } from "react";
-import { Table, Button, Row, Glyphicon} from "react-bootstrap";
+import { Table, Button, Row, Glyphicon } from "react-bootstrap";
 import swal from "sweetalert2";
 
 class ListView extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      todos : []
+      todos: []
     };
   }
 
-
-  componentDidMount(){
+  componentDidMount() {
     fetch("http://localhost:4000/todos")
-    .then(res => res.json())
-    .then(todos => this.setState({todos}) )
+      .then(res => res.json())
+      .then(todos => this.setState({ todos }));
   }
-  delTask = () => {
-    swal("Todo!", "Todo Deleted!", "error");
+  delTask = (id) => {
+    fetch("http://localhost:4000/todos/" + id, {
+      method: 'delete'
+    })
+      .then(res => res.json())
+      .then(todos => {
+        console.log({todos})
+        swal("Todo! " + id, "Todo Deleted!", "error");
+      }).catch(err => console.log(err));
+    
   };
   updateTask = (title, content, index) => {
     swal({
@@ -42,8 +48,7 @@ class ListView extends Component {
     });
   };
   render() {
-    const { todos } =this.state
-
+    const { todos } = this.state;
     return (
       <div>
         <Row>
@@ -90,7 +95,7 @@ class ListView extends Component {
                     <Button
                       bsStyle="danger"
                       onClick={() => {
-                        this.delTask(index);
+                        this.delTask(d._id);
                       }}
                     >
                       Delete
