@@ -15,17 +15,23 @@ class ListView extends Component {
       .then(res => res.json())
       .then(todos => this.setState({ todos }));
   }
-  delTask = (id) => {
+
+  delTask = (id, index) => {
     fetch("http://localhost:4000/todos/" + id, {
-      method: 'delete'
+      method: "delete"
     })
       .then(res => res.json())
-      .then(todos => {
-        console.log({todos})
-        swal("Todo! " + id, "Todo Deleted!", "error");
-      }).catch(err => console.log(err));
-    
+      .then(res => {
+        if(res.status){
+          const {todos} = this.state
+          todos.splice(index,1)
+          this.setState(todos)
+          swal("Todo! " + id, "Todo Deleted!", "error");
+        }
+      })
+      .catch(err => console.log(err));
   };
+
   updateTask = (title, content, index) => {
     swal({
       title: "Todo",
@@ -47,6 +53,7 @@ class ListView extends Component {
       swal("Todo!", "Your Todo Has Been Updated!", "success");
     });
   };
+
   render() {
     const { todos } = this.state;
     return (
@@ -95,7 +102,7 @@ class ListView extends Component {
                     <Button
                       bsStyle="danger"
                       onClick={() => {
-                        this.delTask(d._id);
+                        this.delTask(d._id, index);
                       }}
                     >
                       Delete
