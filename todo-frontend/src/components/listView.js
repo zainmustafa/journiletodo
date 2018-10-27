@@ -3,8 +3,21 @@ import { Table, Button, Row, Glyphicon} from "react-bootstrap";
 import swal from "sweetalert2";
 
 class ListView extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      todos : []
+    };
+  }
+
+
+  componentDidMount(){
+    fetch("http://localhost:4000/todos")
+    .then(res => res.json())
+    .then(todos => this.setState({todos}) )
+  }
   delTask = () => {
-    // this.props.delTask(index);
     swal("Todo!", "Todo Deleted!", "error");
   };
   updateTask = (title, content, index) => {
@@ -29,28 +42,8 @@ class ListView extends Component {
     });
   };
   render() {
-    const data = [
-      {
-        title: "one",
-        content: "two",
-        date: "10/27/2018"
-      },
-      {
-        title: "one1",
-        content: "two",
-        date: "10/27/2018"
-      },
-      {
-        title: "one11",
-        content: "two",
-        date: "10/27/2018"
-      },
-      {
-        title: "one111",
-        content: "two",
-        date: "10/27/2018"
-      }
-    ];
+    const { todos } =this.state
+
     return (
       <div>
         <Row>
@@ -76,7 +69,7 @@ class ListView extends Component {
             </tr>
           </thead>
           <tbody>
-            {data.map((d, index) => {
+            {todos.map((d, index) => {
               return (
                 <tr key={index.toString()}>
                   <td>{index + 1}</td>
