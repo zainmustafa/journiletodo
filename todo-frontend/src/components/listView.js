@@ -35,7 +35,7 @@ class ListView extends Component {
     });
   };
 
-  updateTask = (title, content, index) => {
+  updateTask = (title, content, _id, index) => {
     swal({
       title: "Todo",
       html: `<h2>Update Your Todo</h2>
@@ -51,8 +51,24 @@ class ListView extends Component {
           }
         });
       }
-    }).then(function(result) {
-      swal("Todo!", "Your Todo Has Been Updated!", "success");
+    }).then(result => {
+      const data = {};
+      data.title = result.value[0];
+      data.content = result.value[1];
+      fetch("http://localhost:4000/todos/" + _id, {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(res => {
+          swal("Todo!", "Your Todo Has Been Updated!", "success").then(() => {
+            this.props.updateItem(res, index);
+          });
+        })
+        .catch(err => console.log(err));
     });
   };
 
@@ -95,7 +111,7 @@ class ListView extends Component {
                     <Button
                       bsStyle="primary"
                       onClick={() => {
-                        this.updateTask(d.title, d.content, index);
+                        this.updateTask(d.title, d.content, d._id, index);
                       }}
                     >
                       Edit
