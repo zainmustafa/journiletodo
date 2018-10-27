@@ -1,29 +1,56 @@
 import React, { Component } from "react";
 import { Table, Button } from "react-bootstrap";
+import swal from "sweetalert2";
+
 class ListView extends Component {
-  render() {
-      const data = [
-          {
-              title : "one",
-              content : "two",
-              date : "10/27/2018"
-          },
-          {
-              title : "one1",
-              content : "two",
-              date : "10/27/2018"
-          },
-          {
-              title : "one11",
-              content : "two",
-              date : "10/27/2018"
-          },
-          {
-              title : "one111",
-              content : "two",
-              date : "10/27/2018"
+  delTask = () => {
+    // this.props.delTask(index);
+    swal("Todo!", "Todo Deleted!", "error");
+  };
+  updateTask = (title, content, index) => {
+    swal({
+      title: "Todo",
+      html: `<h2>Update Your Todo</h2>
+        <input id="swal-input1" value="${title}" class="swal2-input" autofocus placeholder="Title">
+        <input id="swal-input2" value="${content}" class="swal2-input" placeholder="Description">`,
+      preConfirm: function() {
+        return new Promise(function(resolve) {
+          if (true) {
+            resolve([
+              document.getElementById("swal-input1").value,
+              document.getElementById("swal-input2").value
+            ]);
           }
-      ]
+        });
+      }
+    }).then(function(result) {
+      console.log({ result });
+      swal("Todo!", "Your Todo Has Been Updated!", "success");
+    });
+  };
+  render() {
+    const data = [
+      {
+        title: "one",
+        content: "two",
+        date: "10/27/2018"
+      },
+      {
+        title: "one1",
+        content: "two",
+        date: "10/27/2018"
+      },
+      {
+        title: "one11",
+        content: "two",
+        date: "10/27/2018"
+      },
+      {
+        title: "one111",
+        content: "two",
+        date: "10/27/2018"
+      }
+    ];
     return (
       <Table responsive>
         <thead>
@@ -37,19 +64,35 @@ class ListView extends Component {
           </tr>
         </thead>
         <tbody>
-          {data.map((d, i) => {
-            return <tr key={i.toString()}>
-              <td>{i+1}</td>
-              <td>{d.title}</td>
-              <td>{d.content}</td>
-              <td>{d.date}</td>
-              <td>
-                <Button bsStyle="primary">Edit</Button>
-              </td>
-              <td>
-                <Button bsStyle="danger">Delete</Button>
-              </td>
-            </tr>;
+          {data.map((d, index) => {
+            return (
+              <tr key={index.toString()}>
+                <td>{index + 1}</td>
+                <td>{d.title}</td>
+                <td>{d.content}</td>
+                <td>{d.date}</td>
+                <td>
+                  <Button
+                    bsStyle="primary"
+                    onClick={() => {
+                      this.updateTask(d.title, d.content, index);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </td>
+                <td>
+                  <Button
+                    bsStyle="danger"
+                    onClick={() => {
+                      this.delTask(index);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            );
           })}
         </tbody>
       </Table>
