@@ -31,7 +31,7 @@ class TodoForm extends Component {
 
   onSubmitForm = () => {
     const { title, content } = this.state;
-    if(title == "" && content == ""){
+    if(title === "" && content === ""){
       return;
     }
     const data = {
